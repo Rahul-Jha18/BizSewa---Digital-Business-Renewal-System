@@ -8,28 +8,42 @@ export function AuthProvider({ children }) {
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  // Safely parse JSON from localStorage
+  const loadFromStorage = () => {
     const savedToken = localStorage.getItem("token");
-    const savedUser = localStorage.getItem("user");
-    if (savedToken && savedUser) {
-      setToken(savedToken);
-      setUser(JSON.parse(savedUser));
+    const savedUserRaw = localStorage.getItem("user");
+
+    if (savedToken && savedUserRaw) {
+      try {
+        const savedUser = JSON.parse(savedUserRaw);
+        setToken(savedToken);
+        setUser(savedUser);
+      } catch (err) {
+        console.error("Failed to parse user from localStorage:", err);
+        // If corrupted, clear it so it doesn't keep crashing
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+      }
     }
     setLoading(false);
+  };
+
+  useEffect(() => {
+    loadFromStorage();
   }, []);
 
   const login = (userData, jwtToken) => {
     setUser(userData);
     setToken(jwtToken);
-    localStorage.setItem("token", jwtToken);
     localStorage.setItem("user", JSON.stringify(userData));
+    localStorage.setItem("token", jwtToken);
   };
 
   const logout = () => {
     setUser(null);
     setToken(null);
-    localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
   };
 
   const value = {
@@ -41,5 +55,10 @@ export function AuthProvider({ children }) {
     isAuthenticated: !!user && !!token,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {/* Only render children after we finish checking localStorage */}
+      {!loading && children}
+    </AuthContext.Provider>
+  );
 }
