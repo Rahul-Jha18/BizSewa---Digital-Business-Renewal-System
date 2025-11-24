@@ -46,13 +46,23 @@ export default function Renewal() {
 
   return (
     <div className="page">
-      <h1>Business Renewal</h1>
+      <div className="page-header">
+        <div>
+          <h1>Business Renewal</h1>
+          <p className="page-subtitle">
+            Select one of your existing businesses to submit a renewal request.
+          </p>
+        </div>
+      </div>
+
       {loading ? (
         <p>Loading...</p>
       ) : businesses.length === 0 ? (
-        <p>No businesses found to renew.</p>
+        <div className="card">
+          <p>No businesses found to renew.</p>
+        </div>
       ) : (
-        <>
+        <div className="card">
           {msg && <div className="alert alert-success">{msg}</div>}
           {error && <div className="alert alert-error">{error}</div>}
           <RenewalForm
@@ -60,7 +70,7 @@ export default function Renewal() {
             onSubmit={handleSubmit}
             loading={submitLoading}
           />
-        </>
+        </div>
       )}
     </div>
   );

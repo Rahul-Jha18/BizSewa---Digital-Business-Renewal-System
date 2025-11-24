@@ -14,28 +14,31 @@ export default function Navbar() {
 
   return (
     <header className="navbar">
-      <div className="navbar-left">
-        <Link to="/" className="navbar-logo">
-          e-Gov Business Portal
-        </Link>
-      </div>
-      <div className="navbar-right">
-        {isAuthenticated && user ? (
-          <>
-            <span className="navbar-user">
-              {user.name} ({user.role})
-            </span>
-            <button className="btn btn-secondary" onClick={handleLogout}>
-              Logout
-            </button>
-          </>
-        ) : (
-          <Link to="/login" className="btn btn-primary">
-            Login
+      <div className="navbar-inner">
+        <div className="navbar-left">
+          <Link to="/" className="navbar-logo">
+            <span className="logo-mark">eGov</span>
+            <span className="logo-text">Biz Portal</span>
           </Link>
-        )}
+        </div>
+        <div className="navbar-right">
+          {isAuthenticated && user ? (
+            <>
+              <span className="navbar-user">
+                <span className="user-name">{user.name}</span>
+                <span className="user-role">{user.role}</span>
+              </span>
+              <button className="btn btn-ghost" onClick={handleLogout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link to="/login" className="btn btn-ghost">
+              Login
+            </Link>
+          )}
+        </div>
       </div>
     </header>
   );
 }
-    

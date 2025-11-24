@@ -68,42 +68,66 @@ export default function ApplicationDetails() {
   if (loading) return <div className="page">Loading...</div>;
   if (!application) return <div className="page">Application not found.</div>;
 
+  const statusClass =
+    application.status === "APPROVED"
+      ? "badge badge-success"
+      : application.status === "REJECTED"
+      ? "badge badge-danger"
+      : "badge badge-warning";
+
   return (
     <div className="page">
-      <h1>Application Details</h1>
+      <div className="page-header">
+        <div>
+          <h1>Application #{application.id}</h1>
+          <p className="page-subtitle">
+            Detailed view of the application and business information.
+          </p>
+        </div>
+        <span className={statusClass}>{application.status}</span>
+      </div>
+
       {msg && <div className="alert alert-success">{msg}</div>}
       {error && <div className="alert alert-error">{error}</div>}
 
-      <div className="card">
-        <h2>Basic Info</h2>
-        <p>
-          <strong>ID:</strong> {application.id}
-        </p>
-        <p>
-          <strong>Type:</strong> {application.type}
-        </p>
-        <p>
-          <strong>Status:</strong> {application.status}
-        </p>
-        <p>
-          <strong>Submitted At:</strong> {application.submitted_at}
-        </p>
-      </div>
+      <div className="card-grid">
+        <div className="card">
+          <h2>Application Info</h2>
+          <div className="info-row">
+            <span>Type</span>
+            <strong>{application.type}</strong>
+          </div>
+          <div className="info-row">
+            <span>Submitted At</span>
+            <strong>{application.submitted_at}</strong>
+          </div>
+          {application.officer_remarks && (
+            <div className="info-row">
+              <span>Officer Remarks</span>
+              <strong>{application.officer_remarks}</strong>
+            </div>
+          )}
+        </div>
 
-      <div className="card">
-        <h2>Business Info</h2>
-        <p>
-          <strong>Registration No:</strong> {application.business?.registration_no}
-        </p>
-        <p>
-          <strong>Name:</strong> {application.business?.business_name}
-        </p>
-        <p>
-          <strong>Type:</strong> {application.business?.business_type}
-        </p>
-        <p>
-          <strong>Address:</strong> {application.business?.address}
-        </p>
+        <div className="card">
+          <h2>Business Info</h2>
+          <div className="info-row">
+            <span>Registration No</span>
+            <strong>{application.business?.registration_no}</strong>
+          </div>
+          <div className="info-row">
+            <span>Name</span>
+            <strong>{application.business?.business_name}</strong>
+          </div>
+          <div className="info-row">
+            <span>Type</span>
+            <strong>{application.business?.business_type}</strong>
+          </div>
+          <div className="info-row">
+            <span>Address</span>
+            <strong>{application.business?.address}</strong>
+          </div>
+        </div>
       </div>
 
       {isOfficer && application.status === "PENDING" && (
@@ -115,9 +139,10 @@ export default function ApplicationDetails() {
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}
               rows={3}
+              className="textarea"
             />
           </label>
-          <div className="dashboard-actions">
+          <div className="actions-row">
             <button
               className="btn btn-primary"
               onClick={handleApprove}
@@ -126,7 +151,7 @@ export default function ApplicationDetails() {
               Approve
             </button>
             <button
-              className="btn btn-secondary"
+              className="btn btn-outline"
               onClick={handleReject}
               disabled={actionLoading}
             >

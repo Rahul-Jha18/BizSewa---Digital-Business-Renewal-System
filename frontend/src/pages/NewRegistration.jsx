@@ -28,9 +28,21 @@ export default function NewRegistration() {
 
   return (
     <div className="page">
+      <div className="page-header">
+        <div>
+          <h1>New Business Registration</h1>
+          <p className="page-subtitle">
+            Provide business details to create a new registration application.
+          </p>
+        </div>
+      </div>
+
       {successMsg && <div className="alert alert-success">{successMsg}</div>}
       {error && <div className="alert alert-error">{error}</div>}
-      <BusinessForm onSubmit={handleSubmit} loading={loading} />
+
+      <div className="card">
+        <BusinessForm onSubmit={handleSubmit} loading={loading} />
+      </div>
     </div>
   );
 }

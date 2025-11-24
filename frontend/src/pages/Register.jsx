@@ -33,18 +33,15 @@ export default function Register() {
 
     setLoading(true);
     try {
-      // Calls /api/auth/register (we already defined registerCitizen)
       const data = await registerCitizen({
         name: form.name,
         email: form.email,
         password: form.password,
       });
 
-      // Auto-login after register
       login(data.user, data.token);
       setMsg("Registration successful!");
 
-      // Redirect based on role (new users are CITIZEN in our backend)
       if (data.user.role === "CITIZEN") navigate("/citizen/dashboard");
       else navigate("/");
     } catch (err) {
@@ -58,67 +55,73 @@ export default function Register() {
   };
 
   return (
-    <div className="page">
-      <form className="card card-small" onSubmit={handleSubmit}>
-        <h2>Register</h2>
+    <div className="auth-page">
+      <div className="auth-card">
+        <h2>Create an account</h2>
+        <p className="auth-subtitle">
+          Register as a citizen to access online business services.
+        </p>
+
         {msg && <div className="alert alert-success">{msg}</div>}
         {error && <div className="alert alert-error">{error}</div>}
 
-        <label>
-          Full Name
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-          />
-        </label>
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <label>
+            Full Name
+            <input
+              type="text"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <label>
-          Email
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
-        </label>
+          <label>
+            Email
+            <input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <label>
-          Password
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
-        </label>
+          <label>
+            Password
+            <input
+              type="password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <label>
-          Confirm Password
-          <input
-            type="password"
-            name="confirmPassword"
-            value={form.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-        </label>
+          <label>
+            Confirm Password
+            <input
+              type="password"
+              name="confirmPassword"
+              value={form.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <button className="btn btn-primary" type="submit" disabled={loading}>
-          {loading ? "Registering..." : "Register"}
-        </button>
+          <button className="btn btn-primary full-width" type="submit" disabled={loading}>
+            {loading ? "Registering..." : "Register"}
+          </button>
+        </form>
 
-        <p style={{ marginTop: "0.75rem", fontSize: "0.85rem" }}>
+        <p className="auth-footer">
           Already registered?{" "}
-          <Link to="/login" className="btn-link">
+          <Link to="/login" className="link">
             Login here
           </Link>
         </p>
-      </form>
+      </div>
     </div>
   );
 }

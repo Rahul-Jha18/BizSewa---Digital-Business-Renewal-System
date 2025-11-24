@@ -44,44 +44,50 @@ export default function Login() {
   };
 
   return (
-    <div className="page">
-      <form className="card card-small" onSubmit={handleSubmit}>
-        <h2>Login</h2>
+    <div className="auth-page">
+      <div className="auth-card">
+        <h2>Sign in</h2>
+        <p className="auth-subtitle">
+          Use your registered email and password to access the portal.
+        </p>
+
         {error && <div className="alert alert-error">{error}</div>}
 
-        <label>
-          Email
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
-        </label>
+        <form onSubmit={handleSubmit} className="auth-form">
+          <label>
+            Email
+            <input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <label>
-          Password
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
-        </label>
+          <label>
+            Password
+            <input
+              type="password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+          </label>
 
-        <button className="btn btn-primary" type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </button>
+          <button className="btn btn-primary full-width" type="submit" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </button>
+        </form>
 
-        <p style={{ marginTop: "0.75rem", fontSize: "0.85rem" }}>
+        <p className="auth-footer">
           Not registered yet?{" "}
-          <Link to="/register" className="btn-link">
-            Register here
+          <Link to="/register" className="link">
+            Create an account
           </Link>
         </p>
-      </form>
+      </div>
     </div>
   );
 }
