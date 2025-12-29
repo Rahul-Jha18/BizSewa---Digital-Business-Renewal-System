@@ -10,3 +10,7 @@ export async function getMyBusinesses() {
   const res = await api.get("/business/my");
   return res.data;
 }
+export const createBusiness = (formData) =>
+  api.post("/api/business", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
